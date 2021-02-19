@@ -1,0 +1,80 @@
+<div >
+    <h1>Super!</h1>
+    <h2>Your skeleton <i class="mdi green-text mdi-run-fast x2"></i> is running.</h2>
+    
+    
+    {% markdown %}
+    Über das Menü **DB-Admin** können durch eine Auswahl von **dbtest** Datenbankänderungen vorgenommen werden.  
+    Diese können über das Menü **TestDB** in einer einfachen Tabellenansicht betrachtet werden.
+
+    Anpassungen
+    -----------
+    
+    Die normale Kommunikation mit dem Backend (Server) erfolgt über Aufrufe der **API-Schnittstelle**.  
+    Um dieses Grundgerüst zu erweitern müssen mind. die Dateien `app/__init__.py` und `app/db.py` angepasst werden.
+    
+    In `db.py` oder auch eigenen z.B. `my_db.py` werden API Einsprung Klassen / Funktionen definiert.  
+    Diese Klassen erweitern die `isp.safrs` Klasse - `ispSAFRSDummy` (ohne Datenbank) oder `ispSAFRSModel` (mit Datenbank) 
+    
+    Damit die Klassen für die API registriert werden müssen sie in `app/__init__.py` geladen  
+    und den models von `_apiConfig` hinzugefügt werden.
+    
+    Auszug aus `app/__init__.py`::
+    
+        ...
+        from app.db import dbtests
+        from isp.safrs import system
+        
+        def run( overlay:dict={} ):
+        ...
+        _apiConfig = {
+            "models": [ dbtests, system ],
+        }
+        ...
+    
+    In den Klassen können zusätzliche `jsonapi_rpc` Methoden angelegt werden.
+    
+    Auszug aus `app/db.py`::
+    
+        from flask import Response 
+        from isp.safrs import ispSAFRSModel
+        
+        class dbtests( ispSAFRSModel ):
+            ...
+            @classmethod
+            @jsonapi_rpc( http_methods=['GET'] )
+            def hello( cls, **kwargs ):
+                """.. restdoc::
+                summary : Hello world test
+                description : Eine neue jsonapi_rpc Methode
+                parameters:
+                    - name : format
+                      in : query
+                      required : false
+                      default : json
+                      description : Format der Ausgabe [ json, html ]         
+                ----
+        
+                Diese Funktion wird über /api/dbtests/hello aufgerufen
+                
+                Wird der Parameter ?format=html angegeben erfolgt die Rückgabe als HTML
+                """
+                if kwargs["format"] == "json":
+                    return cls._int_json_response({"data":{"Hello": "world"}})
+                else:
+                    return Response( "Hello world" , mimetype='text/html') 
+
+    
+    * Alle Angaben zwischen `.. restdoc::` und `----` werden für Swagger / safrs verwendet
+    * Alle weiteren Angaben dienen der normalen Funktionsbeschreibung
+    * Über das Menü **API-Schnittstelle** kann die Konfiguration der `.. restdoc::` Angaben überprüft werden.
+         
+    
+    siehe auch:
+    
+    * https://github.com/thomaxxl/safrs
+    * https://flask.palletsprojects.com
+    * https://docs.sqlalchemy.org
+    
+    {% endmarkdown %}
+</div>
