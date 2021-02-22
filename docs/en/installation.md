@@ -4,7 +4,7 @@ We use the following installation to ensure that all modules are working properl
 
 ## Pre-Installation
 Install python `version 3.7.3`  
-We preferred `Miniconda3-4.6.14` in a seperate directory. Be free for using a installation via env.
+We preferred `Miniconda3-4.6.14` in a seperate directory and we only test with this. But free for using a installation via env.
 
     wget https://repo.anaconda.com/miniconda/Miniconda3-4.6.14-Linux-x86_64.sh -O ./Miniconda3-4.6.14-Linux-x86_64.sh 
 

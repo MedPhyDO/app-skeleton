@@ -80,7 +80,6 @@ default_config = {
         "webserver" : "server.webserver", 
         "api" : "server.api",
         "mqtt" : "server.mqtt",
-        "mqttBaseTopic" : "server.mqtt.basetopic", 
         "title" : "server.webserver.title",
         "resources" : "server.webserver.resources" 
     }

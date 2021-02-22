@@ -75,7 +75,7 @@ app = {
         // object with subscriptions objects and additonal ready flag
         //
     	subscriptions = {}, 
-    
+ 
          // Constructor
          //
         this.construct = function( options ){
@@ -122,11 +122,11 @@ app = {
 			// nur connect wenn noch nicht passiert und args angeben wurden
 			if ( self._isConnected || !args ) return;
 
-		// hostname und port muss dabei sein
+    		// hostname und port muss dabei sein
 			if ( !("host" in args) || !("port" in args) ) return;
 			
 			// Create a client instance
-			self.client = new Paho.MQTT.Client( args.host, Number(args.webclient_port), args.path || "", self.clientId );
+			self.client = new Paho.Client( args.host, Number(args.webclient_port), args.path || "", self.clientId );
 
 			// set callback handlers
 			self.client.onConnectionLost = self.onConnectionLost;
@@ -184,7 +184,7 @@ app = {
 			}
 			
 			// create new MQTT Message Object and prepare option
-            var message = new Paho.MQTT.Message( payload );
+            var message = new Paho.Message( payload );
             message.destinationName = topic;
             if (qos) {
 				message.qos = qos;

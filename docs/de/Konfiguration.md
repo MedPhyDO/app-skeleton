@@ -117,7 +117,6 @@ Default::
         "globals" : "server.api.globals",
         "api" : "server.api",
         "mqtt" : "server.mqtt",
-        "mqttBaseTopic" : "server.mqtt.basetopic", 
         "title" : "server.webserver.title"
     }
     
