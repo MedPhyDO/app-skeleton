@@ -1,4 +1,4 @@
-# documentation / Dokumentation
+# Dokumentation
 
 Wir haben **app-skeleton** entwickelt um uns die Arbeit an unterschiedlichen Projekten zu erleichtern. 
 Es stellt eine einfache Webbasierte Benutzeroberfläche mit API-Schnittstelle, PDF Erstellung und einer Datenbank bereit.  

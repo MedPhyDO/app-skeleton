@@ -1,7 +1,7 @@
 ## Ein Kapitel A
 Einfach nur markdown ohne Kapitelangaben
 
-```
+``` text
 a one-line code block
 ```
 

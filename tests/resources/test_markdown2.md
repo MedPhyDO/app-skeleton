@@ -5,7 +5,7 @@
 Lorem markdownum positis quid, ira est nostros pharetram sperne, in. Ipse exaudi
 replent deam. Forma mare nec maerenti *est Hyadasque producet* gratia nimium?
 
-```
+``` text
 a one-line code block
 ```
 
