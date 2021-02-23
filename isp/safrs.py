@@ -1659,41 +1659,47 @@ class system( ispSAFRSDummy ):
         # testet die vorhandenen fonts auf: Material Design Icons
         #
         sysinfo["fonts"] = {
-            "Material Design Icons" : "ok"
-            }
-        import subprocess
-        
-        cmd = '/usr/bin/fc-list --format="%{family[0]}\n" | sort | uniq'
-        #args = shlex.split(cmd)
-        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE ).communicate()[0] 
-        check_fonts = [
-            "Material Design Icons",
-            "DejaVu Serif"
-        ]
-        has_mdi = False
+            "Material Design Icons" : "not checked"
+        }
         sysinfo["fonts_msg"] = ""
-        for fontname in check_fonts:
-            msg = ""
-            info = ""
-            if str(output).find( fontname ) > -1:
-                sysinfo["fonts"][fontname] = "OK";
-                msg = "vorhanden"
-                bage = "badge-success"
-                if fontname == "Material Design Icons":
-                    has_mdi = True
-               # sysinfo["fonts_msg"] += '<div class="badge badge-pill badge-info mr-1">vorhanden</div><br/>'
-            else: # pragma: no cover
-                sysinfo["fonts"][fontname] = "MISSING";
-                msg = "fehlt"
-                bage = "badge-danger"
-                info = "Dieser Font muss im System installiert werden."
-                #sysinfo["fonts_msg"] += '<div class="badge badge-pill {} mr-1">fehlt</div><br/>';
+        import subprocess
+        from os import path as osp
+        if not osp.isfile( "/usr/bin/fc-list" ):
+
+            cmd = '/usr/bin/fc-list --format="%{family[0]}\n" | sort | uniq'
+            #args = shlex.split(cmd)
+            output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE ).communicate()[0] 
+            check_fonts = [
+                "Material Design Icons",
+                "DejaVu Serif"
+            ]
+            has_mdi = False
             
-            sysinfo["fonts_msg"] += '<div class="badge badge-pill {} mr-1">{} - {}</div>{}<br/>'.format(bage, fontname, msg, info) 
-        if has_mdi:
-            sysinfo["fonts_msg"] += '<i class="mdi mdi-check-outline green-text white resultIcon"></i>'
+            for fontname in check_fonts:
+                msg = ""
+                info = ""
+                if str(output).find( fontname ) > -1:
+                    sysinfo["fonts"][fontname] = "OK";
+                    msg = "vorhanden"
+                    bage = "badge-success"
+                    if fontname == "Material Design Icons":
+                        has_mdi = True
+                   # sysinfo["fonts_msg"] += '<div class="badge badge-pill badge-info mr-1">vorhanden</div><br/>'
+                else: # pragma: no cover
+                    sysinfo["fonts"][fontname] = "MISSING";
+                    msg = "fehlt"
+                    bage = "badge-danger"
+                    info = "Dieser Font muss im System installiert werden."
+                    #sysinfo["fonts_msg"] += '<div class="badge badge-pill {} mr-1">fehlt</div><br/>';
+                
+                sysinfo["fonts_msg"] += '<div class="badge badge-pill {} mr-1">{} - {}</div>{}<br/>'.format(bage, fontname, msg, info) 
+            if has_mdi:
+                sysinfo["fonts_msg"] += '<i class="mdi mdi-check-outline green-text white resultIcon"></i>'
+        else:
+             sysinfo["fonts_msg"] += '<span class="orange-text">Fonts not checked</span>'
+             
         # module bestimmen
-        import sys, subprocess
+        import sys
         import pkg_resources
         # print( sys.executable )
         

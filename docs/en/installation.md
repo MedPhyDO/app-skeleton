@@ -1,10 +1,10 @@
 # Installation
 
-We use the following installation to ensure that all modules are working properly.
+We use the following installation on Ubuntu-Linux to ensure that all modules are working properly.
 
 ## Pre-Installation
-Install python `version 3.7.3`  
-We preferred `Miniconda3-4.6.14` in a seperate directory and we only test with this. But free for using a installation via env.
+
+Install [Miniconda3-4.6.14](https://repo.anaconda.com/miniconda/) includes python `version 3.7.3` by following script.
 
     wget https://repo.anaconda.com/miniconda/Miniconda3-4.6.14-Linux-x86_64.sh -O ./Miniconda3-4.6.14-Linux-x86_64.sh 
 
@@ -21,19 +21,19 @@ start Miniconda installation
     ./Miniconda3-4.6.14-Linux-x86_64.sh
    
 * View and accept the license terms.
-* Leave installation location at the default or change it `~/miniconda3` or `~/miniconda3-py37`
+* Leave installation location at the default `~/miniconda3` or change it to `~/miniconda3-py37`
 * Do you wish the installer to initialize Miniconda3 by running conda init? no  
   (**no** means that bin path of the installation is not included in the system search path)
 
-check installation (location=~/miniconda3-py37)::
+check installation (location=~/miniconda3)::
 
-    ~/miniconda3-py37/bin/python --version
+    ~/miniconda3/bin/python --version
     > Python 3.7.3 
-    ~/miniconda3-py37/bin/pip  --version
+    ~/miniconda3/bin/pip  --version
     > pip 19.0.3 or higher
  
 > **⚠ NOTE**  
-> Do all of the following **pip / python / pigar / spyder3** calls with your installation location in front **~/miniconda3-py37/bin/**  
+> Do all of the following **pip / python / pigar / spyder3** calls with your installation location in front **~/miniconda3/bin/**  
 > to run it in the correct directory
   
 ## Installation from repository
@@ -63,13 +63,11 @@ Install modules used with the required versions
 
     <your miniconda binpath>/pip install -r requirements.txt
   
-Download Javascript / CSS and Fonts to resources/vendor for weasyprint and offline using.
-
-With installation script
+With installation script download Javascript / CSS and Fonts to resources/vendor for weasyprint and offline using.
 
     <your miniconda binpath>/python install-resources.py
 
-Make materialdesignicons-webfont.ttf to be usable by all users
+Make materialdesignicons-webfont.ttf to be usable in your system
 
     sudo cp ./resources/vendor/fonts/materialdesignicons-webfont.ttf /usr/share/fonts/truetype/materialdesignicons_webfont.ttf
 
@@ -87,6 +85,8 @@ or open spyder to edit and run skeleton
 
     <your miniconda binpath>/spyder
 
+On default installaton open [App-Skeleton](http://127.0.0.1:5000/) with your Webbrowser.
+    
 # additional informations
 
 ## run as service on linux ubuntu

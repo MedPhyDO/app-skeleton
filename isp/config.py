@@ -106,10 +106,10 @@ class ispConfig( object ):
         
     _config: Dot
         Die aktuelle Konfiguration
-        
     _configs: list
         Eingebundene Konfigurationen (filename oder angegeben bei der intialisierung )    
-    
+    _lastOverlay: str
+        Gibt an bis zu welcher config Datei eingelesen wurde
     _rootlevel:int
         Fehlerlevel für das root logging (console). Default logging.WARNING
         
@@ -202,6 +202,8 @@ class ispConfig( object ):
             # Konfiguration einlesen und in self._config merken
             self._configLoad( int(lastOverlay) )
             
+        self._lastOverlay = lastOverlay
+        
         #print("#### init B", self._config)
         # die Konfiguration um BASE_DIR erweitern
         self._config[ "BASE_DIR" ] = self._basedir
