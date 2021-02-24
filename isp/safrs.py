@@ -1664,7 +1664,7 @@ class system( ispSAFRSDummy ):
         sysinfo["fonts_msg"] = ""
         import subprocess
         from os import path as osp
-        if not osp.isfile( "/usr/bin/fc-list" ):
+        if osp.isfile( "/usr/bin/fc-list" ):
 
             cmd = '/usr/bin/fc-list --format="%{family[0]}\n" | sort | uniq'
             #args = shlex.split(cmd)
