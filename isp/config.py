@@ -656,7 +656,7 @@ class ispConfig( object ):
             self.mqttCleanup()
         
         if self._config.server.mqtt:
-            # MQTT Logger seltezn
+            # MQTT Logger setzen
             logger = logging.getLogger( "MQTT" )
             
             # Handler auf MQTT

@@ -27,6 +27,6 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-TODO
-====
+Python Module TODO
+==================
 .. todolist::

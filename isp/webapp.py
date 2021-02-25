@@ -60,10 +60,7 @@ def expose_object( self, safrs_object, url_prefix="", **properties):
 
         tablename/collectionname: safrs_object._s_collection_name, e.g. "Users"
         classname: safrs_object.__name__, e.g. "User"
-        
-        .. todo:: response und code noch autom. einfügen
-        .. todo:: api_ funktionen zum  überschreiben verwenden
-               
+                       
         Möglichkeiten:
             a) /class/ : api_list in class aufrufen
             b) /class/{objectId} : keine Funktion objectId vorhanden also api_get aufrufen 
@@ -114,7 +111,7 @@ def expose_object( self, safrs_object, url_prefix="", **properties):
                 # für swagger . durch / ersetzen
                 path_name = path_name.replace(".", "/")
                            
-                docs[ path_name ] = {} # .. todo:: swagger default für die jeweilige __http_method verwenden
+                docs[ path_name ] = {} 
                 for hm in getattr(method, "__http_method", [] ):
                     method_doc = getattr( method, '__rest_doc', {} )
                     if not "tags" in method_doc:
@@ -672,7 +669,7 @@ class ispBaseWebApp():
                
         # value bestimmen
         value = params.get("value", None )
-         
+       
         try:
             output = render_template( 
                 filepath, 
@@ -680,7 +677,7 @@ class ispBaseWebApp():
                 value = value,
                 id = params["id"],
                 uuid = uuidstr, 
-                **self._config.get("variables", {} )
+                **self._config.get("variables", {} ).toDict()
             )
         except Exception as err: 
             # print("[webapp] ERROR: render_template:", err, self._config.get("variables", {} ) )

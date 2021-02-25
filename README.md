@@ -3,7 +3,7 @@
 Wir haben **app-skeleton** entwickelt um uns die Arbeit an unterschiedlichen Projekten zu erleichtern. 
 Es stellt eine einfache Webbasierte Benutzeroberfläche mit API-Schnittstelle, PDF Erstellung und einer Datenbank bereit.  
 
-![overview](/docs/overview.png "Erster Start")
+![overview](docs/overview.png "Erster Start")
 
 An eine Veröffentlichung haben wir erst gedacht, als uns immer mehr Nachfragen aus anderen Kliniken erreichten. 
 Dementsprechend befinden sich viele Module und Funktionen noch im Stadium "learning by doing" und die Dokumentation 
@@ -26,6 +26,8 @@ Using is for research use only.
 
 Die Datei `./config/config.json` bearbeiten und die Konfiguration anpassen. 
 Siehe [Konfiguration (de)](docs/de/Konfiguration.md)
+
+Einfache Installation für Mac User: [MacDummies](docs/de/MacDummies.md)
 
 ## Erster Start
 
