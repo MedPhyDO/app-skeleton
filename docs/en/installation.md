@@ -77,34 +77,34 @@ Font files should have the permission of 644
 
 ## first run
 
-Run pyGQA with default settings
+Run skeleton with default settings
 
-    <your miniconda binpath>/python pygqa.py
+    <your miniconda binpath>/python skeleton.py
     
-or open spyder to edit and run pygqa.py
+or open spyder to edit and run skeleton
 
     <your miniconda binpath>/spyder
 
-On default installaton open [GQA - Geräte-QA](http://127.0.0.1:5000/) with your Webbrowser.
-
+On default installaton open [App-Skeleton](http://127.0.0.1:5000/) with your Webbrowser.
+    
 # additional informations
 
 ## run as service on linux ubuntu
 
-Create a new service for pyGQA::
+Create a new service for skeleton::
     
-    sudo nano /lib/systemd/system/pygqa.service
+    sudo nano /lib/systemd/system/skeleton.service
 
-Content of pygqa.service with start after network is ready and group www-data::
+Content of skeleton.service with start after network is ready and group www-data::
 
     [Unit]
-    Description=Python GQA Service
+    Description=Python skeleton Service
     After=network.target
     
     [Service]
     Type=simple
-    ExecStart=<your miniconda binpath>/python <your gqa location>/pygqa.py --webserver
-    WorkingDirectory=<your gqa location>/
+    ExecStart=<your miniconda binpath>/python <your skeleton location>/skeleton.py --webserver
+    WorkingDirectory=<your skeleton location>/
     Group=www-data
     StandardInput=tty-force
     
@@ -113,13 +113,13 @@ Content of pygqa.service with start after network is ready and group www-data::
 
 start/restart/stop your service
 
-   sudo systemctl start pygqa.service
-   sudo systemctl restart pygqa.service
-   sudo systemctl stop pygqa.service
+   sudo systemctl start skeleton.service
+   sudo systemctl restart skeleton.service
+   sudo systemctl stop skeleton.service
 
 activate your service on system start::
    
-   sudo systemctl enable pygqa.service
+   sudo systemctl enable skeleton.service
 
 ## install additional packages
 
