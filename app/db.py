@@ -27,6 +27,8 @@ class dbtests( ispSAFRSModel ):
         db.Float( precision=5, asdecimal=True, decimal_return_scale=4 )
     """
     
+    __bind_key__ = 'skeleton'
+    
     __table_args__ = {'extend_existing': True}
     
     __tablename__ = "dbtests"
@@ -69,12 +71,10 @@ class dbtests( ispSAFRSModel ):
             
         """
         import pandas as pd
-        
-        
+         
         query = cls.query
-        #print(query.statement)
         
-        data_frame = pd.read_sql_query(query.statement, query.session.bind)
+        data_frame = pd.read_sql_query(sql=query.statement, con=cls.getConnection() )
         #print(data_frame)
         # pandas dataframe als Tabelle
         table_html = (
