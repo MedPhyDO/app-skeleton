@@ -98,12 +98,6 @@ try:
 except IOError as e:
     print("Unable to create file.", e)
 
-''' 
-..TODO:: material-color to vendor/material/
- 
-    https://github.com/mrmlnc/material-color
-'''
- 
 #    
 # create pygments css rules for codehilite    
 #
