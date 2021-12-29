@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.3 / 2021-12-29
+- separate versioning for files in isp/ 
+- update requirements.txt and requirements_upgrade.txt
+
 ## 0.1.2 / 2021-05-19
 - change isp/dicom.py - change debug messages
 - change isp/safrs.py - changes in additional api results, add _extendedSystemCheck
