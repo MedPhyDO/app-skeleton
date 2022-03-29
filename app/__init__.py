@@ -9,7 +9,7 @@ import logging
 
 from isp.config import ispConfig
 
-from app.db import dbtests
+from app.skeleton import dbskeleton
 
 from isp.webapp import ispBaseWebApp
 from isp.safrs import system, db
@@ -79,14 +79,16 @@ class system( system ):
         return {}, html
 
 # -----------------------------------------------------------------------------      
-def run( overlay:dict={} ):
+def run( overlay:dict={}, load_tests_db:bool=False  ):
     ''' Startet ispBaseWebApp mit zusätzlichen config Angaben
     
     Parameters
     ----------
     overlay : dict, optional
         Overlay Angaben für config. The default is {}.
-
+    load_tests_db: bool, optional
+        load also testdb
+        
     Returns
     -------
     webApp : ispBaseWebApp
@@ -98,9 +100,13 @@ def run( overlay:dict={} ):
     _config = ispConfig( mqttlevel=logging.WARNING )
     
     _apiConfig = {
-        "models": [ dbtests, system ],
+        "models": [ dbskeleton, system ],
     }
     
+    if load_tests_db: # pragma: no cover
+        import tests.db as testdb
+        _apiConfig["models"].append( testdb.dbtests )
+        
     # Webserver starten
     webApp = ispBaseWebApp( _config, db, apiconfig=_apiConfig, overlay=overlay )
     

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.1.4 / 2022-03-28
+- many changes in isp/ files
+- rename app/db to app.skeleton
+- many changes in tests/
+
 ## 0.1.3 / 2021-12-29
 - separate versioning for files in isp/ 
 - update requirements.txt and requirements_upgrade.txt

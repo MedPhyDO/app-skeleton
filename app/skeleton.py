@@ -9,7 +9,7 @@ from isp.safrs import ispSAFRSModel, db, isoDateType, isoDateTimeType
 from safrs import log
 from flask import Response 
 
-class dbtests( ispSAFRSModel ):
+class dbskeleton( ispSAFRSModel ):
     """.. restdoc::
         
         description:  Tests - Test von ispSAFRSModel
@@ -31,7 +31,7 @@ class dbtests( ispSAFRSModel ):
     
     __table_args__ = {'extend_existing': True}
     
-    __tablename__ = "dbtests"
+    __tablename__ = "dbskeleton"
     
     id = db.Column('id', db.Integer, primary_key=True, unique=True, autoincrement=True)
     string = db.Column('string', db.String, nullable=False) # 
