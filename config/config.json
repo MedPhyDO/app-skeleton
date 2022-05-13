@@ -13,13 +13,13 @@
         }
     },
     "database": {
-        "main": "skeleton",
+        "main": ["skeleton"],
         "skeleton" : {
             "connection": "sqlite:///{{BASE_DIR}}/skeleton.db"
         }
     },
-    "version": "0.1.0",
+    "version": "0.1.5",
     "variables" : {
-        "Version" : "0.1.0"
+        "Version" : "0.1.5"
     }
 }

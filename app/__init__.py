@@ -104,7 +104,7 @@ def run( overlay:dict={}, load_tests_db:bool=False  ):
     }
     
     if load_tests_db: # pragma: no cover
-        import tests.db as testdb
+        import tests.testdb as testdb
         _apiConfig["models"].append( testdb.dbtests )
         
     # Webserver starten

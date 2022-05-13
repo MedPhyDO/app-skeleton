@@ -10,6 +10,11 @@ webapp
 CHANGELOG
 =========
 
+
+0.1.4 / 2022-04-04
+------------------
+- add file route for doc/ query with parameter raw or raw.vue
+
 0.1.3 / 2022-03-28
 ------------------
 - add route for tests
@@ -34,7 +39,7 @@ __author__ = "R. Bauer"
 __copyright__ = "MedPhyDO - Machbarkeitsstudien des Instituts für Medizinische Strahlenphysik und Strahlenschutz am Klinikum Dortmund im Rahmen von Bachelor und Masterarbeiten an der TU-Dortmund / FH-Dortmund"
 __credits__ = ["R. Bauer", "K.Loot"]
 __license__ = "MIT"
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 __status__ = "Prototype"
 
 import uuid
@@ -50,6 +55,7 @@ from flask import render_template, request
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask.json import JSONEncoder
+import connexion
 
 import logging
 logger = logging.getLogger( "MQTT" )
@@ -632,6 +638,10 @@ class ispBaseWebApp():
 
         # alles normalerweise aus ui verwenden
         root = self._config.get("server.webserver.ui", "", replaceVariables = True)
+  
+        # connexion verwendet FirstValueURIParser collectionFormat: csv
+        # ?letters=a,b,c&letters=d,e,f wird letters = ['a', 'b', 'c']
+        params = self.parseRequestParams( connexion.request.args.copy() ) 
 
         if filepath[:10] == "resources/":
             root = self._config.get("server.webserver.resources", "", replaceVariables = True)
@@ -645,12 +655,15 @@ class ispBaseWebApp():
         elif filepath[:12] == "dbadminframe":
             return self.routeIFrame( "/dbadmin" )
         elif filepath[:4] == "docs":
-            return self.routeDocs( filepath )
+            if "raw" in params or "raw.vue" in params:
+                return self.routeFile( filepath, osp.join( self._config.get( "BASE_DIR", "docs")  ) )
+            else:
+                return self.routeDocs( filepath )
         elif filepath[:8] == "coverage":
             return self.routeCoverage( filepath )
         elif filepath[:7] == "render/":
             return self.routeRender( filepath[7:] )
-        elif filepath[-4:] == ".vue" or filepath[:6] == "views/":
+        elif filepath[-4:] == ".vue" or filepath[:6] == "views/" :
             self.default_header = {'Content-Type': 'application/javascript; charset=utf-8'}
             root = self._config.get("server.webserver.ui", "", replaceVariables = True)
             #return self.routeFile( filepath, root )
@@ -665,7 +678,7 @@ class ispBaseWebApp():
             # alles andere - ohne Angaben index aufrufen
             if filepath == "" or filepath == "index.html" or filepath == "index.phtml":
                 filepath = "index"
-                return self.routeRender( filepath )
+                return self.routeRender( filepath  )
 
         return self.routeFile( filepath, root )
 
@@ -686,15 +699,12 @@ class ispBaseWebApp():
             Inhalt der geladenen Datei
 
         """
-        # sonst nur die Datei laden
-                 
-    
+   
         try:
             _filepath = osp.join( root, filepath ) # .format( **{"BASE_DIR": self._config.BASE_DIR} )
             output = send_file( _filepath )
         except:
-            output = "<h1>Datei {} wurde nicht gefunden</h1>".format( filepath )
-            #print("routeFile: filepath error", _filepath)
+            output = "<h1>Datei '{}' wurde nicht gefunden</h1>".format( filepath )
             self.status_code = 404
             pass
         return output
@@ -723,7 +733,6 @@ class ispBaseWebApp():
             if filepath.find(".phtml") == -1:
                 filepath = "{}.phtml".format( filepath )
 
-
         uuidstr = str( uuid.uuid1() )
         params = {
              "uuid" : uuidstr,
@@ -731,7 +740,7 @@ class ispBaseWebApp():
         }
 
         # defaults mit requestParams überschreiben
-        import connexion
+  
         # connexion verwendet FirstValueURIParser collectionFormat: csv
         # ?letters=a,b,c&letters=d,e,f wird letters = ['a', 'b', 'c']
         params.update( self.parseRequestParams( connexion.request.args.copy() ) )
@@ -789,10 +798,11 @@ class ispBaseWebApp():
             /docs/rebuild - Dokumentation komplett erneuern (ui-docs)
 
         """
+        
         # wenn nur docs angegeben wurde iframe erstellen
         if len(filepath) == 4:
             return '<div class="iframe-container overflow-hidden flex-1"><iframe src="/docs/index.html" ></iframe></div>'
-
+        
         # Ausführungspfad für docs festlegen
         docs_root = osp.join( self._config.get( "BASE_DIR", "") , '.docs' )
         docs_path = docs_root

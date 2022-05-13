@@ -74,7 +74,7 @@ class dbskeleton( ispSAFRSModel ):
          
         query = cls.query
         
-        data_frame = pd.read_sql_query(sql=query.statement, con=cls.getConnection() )
+        data_frame = pd.read_sql_query(sql=str(query), con=cls._get_connection() )
         #print(data_frame)
         # pandas dataframe als Tabelle
         table_html = (
