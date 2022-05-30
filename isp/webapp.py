@@ -10,6 +10,13 @@ webapp
 CHANGELOG
 =========
 
+0.1.6 / 2022-05-16
+------------------
+- add scheme parameter to server.webserver 
+
+0.1.5 / 2022-04-04
+------------------
+- add file route for query with parameter vuejs and change jinja start / end to {! !} for this and vuejs files
 
 0.1.4 / 2022-04-04
 ------------------
@@ -325,7 +332,8 @@ class ispBaseWebApp():
             if self._config.get("server.webserver.TESTING"):
                 mode = "TESTING"
 
-            self.apiurl = "http://{}:{}{}".format(
+            self.apiurl = "{}://{}:{}{}".format(
+                self._config.get("server.webserver.scheme", "http"),
                 self._config.get("server.webserver.host"),
                 self._config.get("server.webserver.port"),
                 self._config.get("server.api.prefix", "")
@@ -663,10 +671,9 @@ class ispBaseWebApp():
             return self.routeCoverage( filepath )
         elif filepath[:7] == "render/":
             return self.routeRender( filepath[7:] )
-        elif filepath[-4:] == ".vue" or filepath[:6] == "views/" :
+        elif "vuejs" in params or filepath[-4:] == ".vue" or filepath[:6] == "views/" :
             self.default_header = {'Content-Type': 'application/javascript; charset=utf-8'}
-            root = self._config.get("server.webserver.ui", "", replaceVariables = True)
-            #return self.routeFile( filepath, root )
+            return self.routeRender( filepath, True )
         elif filepath[:9] == "unittest_":
             # Spezielle render aufruf für unittest
             return self.routeRender( filepath )
@@ -709,23 +716,27 @@ class ispBaseWebApp():
             pass
         return output
 
-    def routeRender( self, filepath:str="" ):
+    def routeRender( self, filepath:str="", is_vue:bool=False ):
         """Ein Template in ui oder template_folder rendern.
 
+        if is_vue 
+        
         Parameters
         ----------
         filepath : str, optional
             file und path einer datei aus ui. The default is "".
-
+        is_vue: bool,optional
+            Render with jinja start / end {! / !} The default is false.
         Returns
         -------
         output : str
             Das gerenderte Template.
 
+
         """
 
         # .vue as default in views
-        if filepath[-4:] == ".vue" or filepath[:6] == "views/":
+        if is_vue or filepath[-4:] == ".vue" or filepath[:6] == "views/":
             if filepath.find(".vue") == -1 and filepath.find(".js") == -1:
                 filepath = "{}.vue".format( filepath )
         else:
@@ -747,15 +758,35 @@ class ispBaseWebApp():
 
         # value bestimmen
         value = params.get("value", None )
-
+        variables = self._config.get("variables", {}, replaceVariables=True ).toDict()
+        
+        v = {
+            "params": params,
+            "value": value,
+            "id": params["id"],
+            "uuid": uuidstr,
+            "variables": variables
+        }
+        
+        if is_vue:
+            
+            # change variable_start_string and variable_end_string for vue files
+            variable_start_string = self.app.jinja_env.variable_start_string
+            variable_end_string = self.app.jinja_env.variable_end_string
+            
+            self.app.jinja_env.variable_start_string = "{!"
+            self.app.jinja_env.variable_end_string = "!}"
+        
         try:
             output = render_template(
                 filepath,
+                v = v,
                 params = json.dumps( params ),
                 value = value,
                 id = params["id"],
                 uuid = uuidstr,
-                **self._config.get("variables", {} ).toDict()
+                **self._config.get("variables", {}, replaceVariables=True ).toDict()
+                
             )
         except Exception as err:
 
@@ -764,7 +795,9 @@ class ispBaseWebApp():
             output = "<h1>Das Template {} wurde nicht gefunden oder ein parser error [ {} ] liegt vor.</h1>".format( filepath, err )
             self.status_code = 404
             pass
-
+        if is_vue:
+            self.app.jinja_env.variable_start_string = variable_start_string 
+            self.app.jinja_env.variable_end_string = variable_end_string 
         return output
 
     def routeIFrame( self, src:str="" ):

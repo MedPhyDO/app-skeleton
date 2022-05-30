@@ -647,7 +647,8 @@ class dummy( ispSAFRSDummy ):
         #
         # pdf und png Datei erstellen
         #        
-        result = pdf.render_pdf_and_png( )
+        #result = pdf.render_pdf_and_png( )
+        result = pdf.render_pdf( )
         
         # add _variables to result
         result[ "_variables" ] = pdf._variables
