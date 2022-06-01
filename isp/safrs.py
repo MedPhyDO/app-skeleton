@@ -48,6 +48,9 @@ examples ::
 CHANGELOG
 =========
 
+0.1.6 / 2022-05-27
+- change wrapped_fn() modify error Message for jsonify()
+
 0.1.5 / 2022-05-13
 - modify RQLQuery._rql_cmp() add Check if value is also a database field
 - modify groupsplit to avoid problems with diffrent sql dialects
@@ -594,7 +597,7 @@ def ispSAFRS_decorator( fn ):
                 result = jsonify( result )
             except Exception as exc:  # pragma: no cover
                 status_code = getattr(exc, "status_code", 500)
-                message = getattr(exc, "message", "unknown error")
+                message = getattr(exc, "message", "unknown error in wrapped_fn - jsonify : {}".format( str(exc) ))
                
                 safrs_obj.appError(
                         "{} - {}".format( func_name, message ),
@@ -726,13 +729,7 @@ class ispSAFRS(SAFRSBase, RQLQueryMixIn):
         query = cls.query
         if hasattr(cls, "__bind_key__"):
             binds = query.session.app.config.get("SQLALCHEMY_BINDS")
-            
-            print("_get_connection", binds, cls.__bind_key__ , query.session.bind)
-            if cls.__bind_key__ in binds:
-                connection = binds[cls.__bind_key__]
-                
-            else:
-                connection = query.session.bind
+            connection = binds[cls.__bind_key__]
         else:
             connection = query.session.bind
         return connection
