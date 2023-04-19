@@ -1,12 +1,11 @@
 '''
-Additional imports for right versions with pigar 
+Additional imports for requirements.txt
 '''
 import spyder
 import spyder_kernels
 import rtree
-import pigar
+import pipreqs
 import jsonschema 
-import PyYAML
 import m2r2
 import sphinx_rtd_theme
 import pylinac

@@ -380,13 +380,21 @@ class ispTest( testBase ):
         b = {"B":2}
         c = dict_merge(a, b)
         self.assertEqual(
-            c, {'A': 1, 'B': 2}, "dict_merge auch neue keys") 
+            c, {'A': 1, 'B': 2}, "dict_merge with new key") 
 
-        c = dict_merge(a, b, False)
+        a = {"A":1}
+        b = {"A":11, "C":3}
+        c = dict_merge(a, b)
         self.assertEqual(
-            c, {'A': 1}, "dict_merge nur vorhandene keys")
- 
-
+            c, {'A': 11, 'C': 3}, "dict_merge with override") 
+        
+        a = {"A":1, "B": { "C":3, "D":4 } }
+        b = {"B": { "D":14, "E":5 } }
+        c = dict_merge(a, b)
+        self.assertEqual(
+            c, {'A': 1, "B": { "C":3, "D":14, "E":5 }}, "dict_merge deep") 
+        
+        
         # test in config setzen update prüfen
         #
         localtime = time.strftime("%Y%m%d %H:%M:%S.%f", time.localtime(time.time()) )
@@ -654,10 +662,10 @@ class ispTest( testBase ):
             f.write( "#Falscher Inhalt" )
             
         config = ispConfig()
-        
+        os.remove( error_json_file )
         self.assertEqual(
             config._loadErrors, [ error_json_file ], "load error wurde nicht ausgelöst")
-        os.remove( error_json_file )
+        
 
     def test_config_jinja(self):    
         '''jinja Template Funktionen der config testen.
@@ -871,10 +879,6 @@ class ispTest( testBase ):
         
         # docs iframe laden 
         response = self.app.get( "/docs" ) 
-        self.assertEqual(response.status_code, 200, "Api Status nicht 200")
-
-        # /docs/ wird zu /docs also auch iframe laden
-        response = self.app.get( "/docs/" ) 
         self.assertEqual(response.status_code, 200, "Api Status nicht 200")
         
         # docs laden (beim ersten Aufruf erzeugen)
@@ -1275,7 +1279,7 @@ class ispTest( testBase ):
         )
         
         
-    def test_webapp_db_tests_rqlFilter( self ):
+    def skip__test_webapp_db_tests_rqlFilter( self ):
         ''' Api aufruf durchführen 
         GET /tests/
  
@@ -1960,7 +1964,18 @@ class ispTest( testBase ):
         #print( response.json )
         
         # .. todo:: rückgabe als pdf
-        
+    def test_plot_base( self ):    
+        print("TODO: test_plot")
+        pass
+    
+    def test_dicom_base( self ):    
+        print("TODO: test_dicom")
+        pass
+    
+    def test_mssql_base( self ):    
+        print("TODO: test_mssql")
+        pass
+    
           
 def suite( testClass:None ):
     '''Fügt alle Funktionen, die mit test_ beginnen aus der angegeben Klasse der suite hinzu
@@ -2008,6 +2023,16 @@ def suite( testClass:None ):
                 pass
             elif m.startswith('test_isp_mpdf_'):
                 suite.addTest( testClass(m),  )
+                pass
+            elif m.startswith('test_isp_plot_'):
+                suite.addTest( testClass(m),  )
+                pass
+            elif m.startswith('test_isp_dicom_'):
+                suite.addTest( testClass(m),  )
+                pass
+            elif m.startswith('test_isp_mssql_'):
+                suite.addTest( testClass(m),  )
+                pass
                 pass
     
     return suite

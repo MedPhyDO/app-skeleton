@@ -4,36 +4,36 @@ We use the following installation on Ubuntu-Linux to ensure that all modules are
 
 ## Pre-Installation
 
-Install [Miniconda3-4.6.14](https://repo.anaconda.com/miniconda/) includes python `version 3.7.3` by following script.
+Install [Miniconda3-py39_4.10.3](https://repo.anaconda.com/miniconda/) includes python `version 3.10.9` by following script.
 
-    wget https://repo.anaconda.com/miniconda/Miniconda3-4.6.14-Linux-x86_64.sh -O ./Miniconda3-4.6.14-Linux-x86_64.sh 
+    wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh -O ./Miniconda3-py39_4.10.3-Linux-x86_64.sh
 
-Check checksum sha:  https://docs.conda.io/en/latest/miniconda_hashes.html for Miniconda3-4.6.14-Linux-x86_64.sh **0d6b23895a91294a4924bd685a3a1f48e35a17970a073cd2f684ffe2c31fc4be**
+Check checksum sha:  https://docs.conda.io/en/latest/miniconda_hashes.html for Miniconda3-py39_4.10.3-Linux-x86_64.sh **1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f**
 
-    sha256sum ./Miniconda3-4.6.14-Linux-x86_64.sh
+    sha256sum ./Miniconda3-py39_4.10.3-Linux-x86_64.sh
     
 if the checksum is correct make the file executable
 
-    chmod +x ./Miniconda3-4.6.14-Linux-x86_64.sh
+    chmod +x ./Miniconda3-py39_4.10.3-Linux-x86_64.sh
 
 start Miniconda installation
    
-    ./Miniconda3-4.6.14-Linux-x86_64.sh
+    ./Miniconda3-py39_4.10.3-Linux-x86_64.sh
    
 * View and accept the license terms.
-* Leave installation location at the default `~/miniconda3` or change it to `~/miniconda3-py37`
+* Leave installation location at the default `~/miniconda3` or change it to `~/miniconda3-py310`
 * Do you wish the installer to initialize Miniconda3 by running conda init? no  
   (**no** means that bin path of the installation is not included in the system search path)
 
 check installation (location=~/miniconda3)::
 
     ~/miniconda3/bin/python --version
-    > Python 3.7.3 
+    > Python 3.10.9 
     ~/miniconda3/bin/pip  --version
-    > pip 19.0.3 or higher
+    > pip 22.3.1 or higher
  
 > **⚠ NOTE**  
-> Do all of the following **pip / python / pigar / spyder3** calls with your installation location in front **~/miniconda3/bin/**  
+> Do all of the following **pip / python / pipreqs / spyder3** calls with your installation location in front **~/miniconda3/bin/**  
 > to run it in the correct directory
   
 ## Installation from repository
@@ -133,15 +133,15 @@ To install a specific version, type the package name followed by the required ve
 
     <your miniconda binpath>/pip install <packagename>==<version>
  
-Update requirements.txt with additional packages by using `pigar` just this project in current directory:
+Update requirements.txt with additional packages by using `pipreqs` just this project in current directory:
 
 Update requirements.txt
 
-    <your miniconda binpath>/pigar --without-referenced-comments
+    <your miniconda binpath>/pipreqs --force
 
 Update requirements_upgrade.txt
 
-    <your miniconda binpath>/pigar --without-referenced-comments -o '>=' -p ./requirements_upgrade.txt
+    <your miniconda binpath>/pipreqs --force --mode gt  --savepath requirements_upgrade.txt
 
 ## Update
 

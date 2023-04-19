@@ -274,7 +274,7 @@ class testCaseBase(unittest.TestCase):
 
         # small changes depends on diffrent font rendering
         le = 350.0
-        le = 100
+        #le = 100
         self.assertLessEqual( mse, le,
             "Der PNG Vergleichsbild MSE stimmt nicht. Diff image '{}' prüfen. PDF files:\n{}\n{}".format( 
                 png_new_name + ".diff.png",

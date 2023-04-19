@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.6 / 2023-04-19
+- install with python 3.10
+- even more changes in isp/ files
+- change requirements for known security vulnerabilities
+- some changes in tests/
+
 ## 0.1.5 / 2022-05-13
 - more changes in isp/ files
 - change requirements for known security vulnerabilities
