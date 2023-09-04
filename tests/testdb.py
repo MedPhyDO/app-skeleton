@@ -226,10 +226,10 @@ class dbtests( ispSAFRSModel ):
 
             _result = {
                 "data" : [
-                    {"attributes": {"Geraet": "AL", "hasChildren": 1, "label": "AL"}, "type": "Ersatz"},
-                    {"attributes": {"Geraet": "la", "hasChildren": 1, "label": "LA20"}, "type": "Ersatz"},
-                    {"attributes": {"Geraet": "vb", "hasChildren": 1, "label": "VitalBeam"}, "type": "Ersatz"},
-                    {"attributes": {"Geraet": "tb", "hasChildren": 1, "label": "TrueBeam"}, "type": "Ersatz"}
+                    {"attributes": {"Geraet": "AL", "hasChildren": 1, "label": "AL"}, "type": "spare"},
+                    {"attributes": {"Geraet": "la", "hasChildren": 1, "label": "LA"}, "type": "spare"},
+                    {"attributes": {"Geraet": "vb", "hasChildren": 1, "label": "VB"}, "type": "spare"},
+                    {"attributes": {"Geraet": "tb", "hasChildren": 1, "label": "TB"}, "type": "spare"}
                 ]
             }
         return cls._int_json_response( _result )

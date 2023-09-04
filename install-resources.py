@@ -23,7 +23,8 @@ vendors = [
 	"fonts",
 	"jquery",
 	"material",
-	"paho-mqtt",
+    "paho-mqtt",
+	"openapi-explorer",
 	"pygment",
 	"ace",
     "moment",
@@ -52,6 +53,9 @@ resources = [
     { "from":"https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.8.55/fonts/materialdesignicons-webfont.woff", "to":"fonts/materialdesignicons-webfont.woff", "typ":"bin" },
     { "from":"https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.8.55/fonts/materialdesignicons-webfont.woff2", "to":"fonts/materialdesignicons-webfont.woff2", "typ":"bin" },
 
+    # openapi-explorer
+    { "from":" https://unpkg.com/openapi-explorer@0/dist/browser/openapi-explorer.min.js", "to":"openapi-explorer/openapi-explorer.min.js", "typ":"text" },
+   
 	# ace
 	{ "from":"https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js", "to":"ace/ace-1.4.12.min.js", "typ":"text" },
 	{ "from":"https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-text.min.js", "to":"ace/mode-text.js", "typ":"text" },
