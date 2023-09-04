@@ -1,36 +1,40 @@
 # Installation
 
-We use the following installation on Ubuntu-Linux to ensure that all modules are working properly.
+Use the following installation on Ubuntu-Linux to ensure that all modules are working properly.
 
 ## Pre-Installation
 
-Install [Miniconda3-py39_4.10.3](https://repo.anaconda.com/miniconda/) includes python `version 3.10.9` by following script.
+Add additional packages to your system
 
-    wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh -O ./Miniconda3-py39_4.10.3-Linux-x86_64.sh
+    sudo apt install poppler-utils libpoppler-cpp-dev
 
-Check checksum sha:  https://docs.conda.io/en/latest/miniconda_hashes.html for Miniconda3-py39_4.10.3-Linux-x86_64.sh **1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f**
+Install [Miniconda3-py311_23.5.0-3](https://repo.anaconda.com/miniconda/) includes python `version 3.11.4` by following script.
 
-    sha256sum ./Miniconda3-py39_4.10.3-Linux-x86_64.sh
+    wget https://repo.anaconda.com/miniconda/Miniconda3-py311_23.5.0-3-Linux-x86_64 -O ./Miniconda3-py311_23.5.0-3-Linux-x86_64.sh
+
+Check checksum sha:  https://docs.conda.io/en/latest/miniconda_hashes.html for Miniconda3-py311_23.5.0-3-Linux-x86_64.sh **61a5c087893f6210176045931b89ee6e8760c17abd9c862b2cab4c1b7d00f7c8**
+
+    sha256sum ./Miniconda3-py311_23.5.0-3-Linux-x86_64.sh
     
 if the checksum is correct make the file executable
 
-    chmod +x ./Miniconda3-py39_4.10.3-Linux-x86_64.sh
+    chmod +x ./Miniconda3-py311_23.5.0-3-Linux-x86_64.sh
 
 start Miniconda installation
    
-    ./Miniconda3-py39_4.10.3-Linux-x86_64.sh
+    ./Miniconda3-py311_23.5.0-3-Linux-x86_64.sh
    
 * View and accept the license terms.
-* Leave installation location at the default `~/miniconda3` or change it to `~/miniconda3-py310`
+* Leave installation location at the default `~/miniconda3` or change it to `~/miniconda3-py311`
 * Do you wish the installer to initialize Miniconda3 by running conda init? no  
   (**no** means that bin path of the installation is not included in the system search path)
 
 check installation (location=~/miniconda3)::
 
     ~/miniconda3/bin/python --version
-    > Python 3.10.9 
+    > Python 3.11.4 
     ~/miniconda3/bin/pip  --version
-    > pip 22.3.1 or higher
+    > pip 23.1.2 or higher
  
 > **⚠ NOTE**  
 > Do all of the following **pip / python / pipreqs / spyder3** calls with your installation location in front **~/miniconda3/bin/**  
@@ -166,4 +170,3 @@ Upgrade everything from requirements_upgrade.txt by using
 If you have a problem with a certain package stalling the upgrade (NumPy sometimes),  
 just go to the directory ($), comment out the name (add a # before it) and run the upgrade again.  
 You can later uncomment that section back. This is also great for copying Python global environments.
-

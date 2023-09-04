@@ -36,17 +36,17 @@ class dbskeleton( ispSAFRSModel ):
     id = db.Column('id', db.Integer, primary_key=True, unique=True, autoincrement=True)
     string = db.Column('string', db.String, nullable=False) # 
     date = db.Column('date', isoDateType ) # YYYY-MM-DD
-    datetime = db.Column('datetime', isoDateTimeType ) # YYYY-MM-DD HH:mm:SS
+    isodatetime = db.Column('isodatetime', isoDateTimeType ) # YYYY-MM-DD HH:mm:SS
+    isodate = db.Column('isodate', isoDateType ) # YYYY-MM-DD
     integer = db.Column('integer', db.Integer, nullable=True)
-    data = db.Column('data', db.JSON ) 
-    tags = db.Column('tags',  db.String, nullable=True)
-    gruppe = db.Column('gruppe',  db.String, nullable=True)
-    aktiv = db.Column('aktiv', db.Integer, nullable=False, default=True)
     float = db.Column('float', db.Float( asdecimal=True ), nullable=False, default=0) # (5,True,4) gibt 0.3333 als str
-    
     decimal = db.Column('decimal', db.DECIMAL( 5, 2, 1, True ), nullable=False, default=0)
     numeric = db.Column('numeric', db.Numeric( 5, 2, 3, False ), nullable=False, default=0 )
-        
+    active = db.Column('active', db.Integer, nullable=False, default=True)
+    tags = db.Column('tags',  db.String, nullable=True)
+    gruppe = db.Column('gruppe',  db.String, nullable=True)
+    data = db.Column('data', db.JSON ) 
+         
     @classmethod
     @jsonapi_rpc( http_methods=['GET'] )
     def table( cls, **kwargs ):
@@ -79,12 +79,13 @@ class dbskeleton( ispSAFRSModel ):
         # pandas dataframe als Tabelle
         table_html = (
             data_frame.round(2).style
-            .set_uuid( "test_pandas_" )
-            .set_table_attributes('class="dbtests sysinfo layout-fill-width"') \
-            #.format( { 'Gantry':'{0:.1f}', 'Kollimator':'{0:.1f}', 'delta':'{0:.3f}'} )
-            .hide_index()
-            #.highlight_max(subset=["delta"], color='yellow', axis=0)
-            .render()
+                .set_uuid( "test_pandas_" )
+                .set_table_attributes('class="dbtests sysinfo layout-fill-width"') \
+                #.format( { 'Gantry':'{0:.1f}', 'Kollimator':'{0:.1f}', 'delta':'{0:.3f}'} )
+            # .hide_index() # FIXME: 311
+                #.highlight_max(subset=["delta"], color='yellow', axis=0)
+                #.render() # FIXME: 311
+                .to_html( index=False )
         )
             
         style = '''

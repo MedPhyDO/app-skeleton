@@ -9,6 +9,11 @@ webapp
 CHANGELOG
 =========
 
+0.1.8 / 2023-09-01
+------------------
+- change __init__ to set/get db_bind in config
+- use javascript openapi-exploer instead python based flask_swagger_ui
+
 0.1.7 / 2023-01-11
 ------------------
 - change api swagger info object version to use config server.api.version 
@@ -49,7 +54,7 @@ __author__ = "R. Bauer"
 __copyright__ = "MedPhyDO - Machbarkeitsstudien des Instituts für Medizinische Strahlenphysik und Strahlenschutz am Klinikum Dortmund im Rahmen von Bachelor und Masterarbeiten an der TU-Dortmund / FH-Dortmund"
 __credits__ = ["R. Bauer", "K.Loot"]
 __license__ = "MIT"
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 __status__ = "Prototype"
 
 import uuid
@@ -65,8 +70,7 @@ from flask import Flask, send_file
 from safrs import SAFRSAPI  # , SAFRSRestAPI  # api factory
 from flask import render_template, request
 from flask_cors import CORS
-from flask_swagger_ui import get_swaggerui_blueprint
-from flask.json import JSONEncoder
+from flask_sqlalchemy import SQLAlchemy
 import connexion
 
 import logging
@@ -201,7 +205,7 @@ class ispBaseWebApp():
 
     """
 
-    def __init__(self, config=None, db=None, name:str=None, webconfig=None, apiconfig=None, overlay:dict={}):
+    def __init__(self, config=None, db:SQLAlchemy=None, name:str=None, webconfig=None, apiconfig=None, overlay:dict={}):
         """Erzeugt die Flask App.
 
         ruft _create_app auf um die Datenbank Api bereitzustellen.
@@ -290,6 +294,7 @@ class ispBaseWebApp():
                 #db_uri = self._config.get("database." + name + ".connection", "").format( **{"BASE_DIR": self._config.BASE_DIR } )
                 db_binds[name] = self._config.get("database." + name + ".connection", "", replaceVariables=True)
 
+        self._config.set("database.db_binds", db_binds)
         #
         # App erzeugen mit SQLAlchemy() und DatabaseUri
         #
@@ -377,7 +382,7 @@ class ispBaseWebApp():
                      debug=self._config.get("server.webserver.debug")
                 )
 
-    def _create_app(self, db=None, binds:dict={} ):
+    def _create_app(self, db:SQLAlchemy=None, binds:dict={} ):
         """Erzeugt die Flask App.
 
         Ruft create_api auf um die Datenbank api bereitzustellen
@@ -421,7 +426,7 @@ class ispBaseWebApp():
             # Datenbank und Datenbank Api
             with self.app.app_context( ):
                 try:
-                    db.create_all( bind=binds.keys() )
+                    db.create_all( bind_key=binds.keys() )
                 except Exception as exc: # pragma: no cover
                     print( "[webapp] _create_app error" , exc)
                 self._create_api( )
@@ -491,32 +496,10 @@ class ispBaseWebApp():
             custom_swagger=custom_swagger
         )
 
-
-        ## deaktiviere externe swagger-ui Prüfung wenn nicht localhost (validatorUrl=False)
-        prefix = "/api"
-        # Call factory function to create our blueprint
-        swaggerui_blueprint = get_swaggerui_blueprint(
-            prefix,
-            "{}/swagger.json".format(prefix),
-            config={  # Swagger UI config overrides
-                "docExpansion": "none",
-                "defaultModelsExpandDepth": -1,
-                "validatorUrl" : False
-            }
-        )
-        swaggerui_blueprint.json_encoder = JSONEncoder
-        self.app.register_blueprint(swaggerui_blueprint, url_prefix=prefix)
-
-        #import sys
-        #print( "server.api.models", sys.modules["db"] )
         # go through all models and add a pointer to api
         for model in self._config.get("server.api.models"):
-            # model bekannt machen
-            #print("server.api.models", dir(model), dir(model.__weakref__), model.__module__ )
-            
+            # model bekannt machen 
             self.api.expose_object( model )
-            
-            
             
             # create swagger docu for extensions without a database
             if hasattr( model, "no_flask_admin") and model.no_flask_admin == True:
@@ -663,8 +646,10 @@ class ispBaseWebApp():
             root = self._config.get("server.webserver.resources", "", replaceVariables = True)
         elif filepath[:8] == "globals/":
             root = self._config.get("server.webserver.globals", "", replaceVariables = True)
-        elif filepath[:12] == "apiframe":
+        elif filepath[:8] == "apiframe":
             return self.routeIFrame( "/api" )
+        elif filepath[-3:] == "api" or filepath[-4:] == "api/":
+            return self.routeApi( self.apiurl )
         elif filepath[:12] == "dbadminframe":
             return self.routeIFrame( "/dbadmin" )
         elif filepath[:4] == "docs":
@@ -694,6 +679,18 @@ class ispBaseWebApp():
 
         return self.routeFile( filepath, root )
 
+    def routeApi( self, apiurl:str="", spec="swagger.json" ):
+        return """
+            <!doctype html>
+            <html>
+            <head>
+                <script type="module" src="/resources/vendor/openapi-explorer/openapi-explorer.min.js"></script>
+           </head>
+            <body>
+                <openapi-explorer server-url="{}" spec-url="{}/{}"> </openapi-explorer>
+            </body>
+            </html>
+            """.format( apiurl, apiurl, spec )
 
     def routeFile( self, filepath:str="", root="" ):
         """Eine normale Datei laden.

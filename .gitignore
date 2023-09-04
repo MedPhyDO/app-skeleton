@@ -117,6 +117,9 @@ venv.bak/
 .spyderproject
 .spyproject
 
+# vscode project settings
+.vscode
+
 # Rope project settings
 .ropeproject
 
@@ -138,9 +141,9 @@ dmypy.json
 cython_debug/ 
 
 # additionals 
-.gitignore
 .docs/
 .htmlcov/
+data/
 tests/files/
 tests/resources/check/
 tests/resources/vendor/

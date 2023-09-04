@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = '0.1.6'
+__version__ = '0.2.0'
 __project__ = "APP - Skeleton"
 __version_info__ = __version__.split('.')
 __author__ = "R. Bauer"

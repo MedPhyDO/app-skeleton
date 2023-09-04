@@ -15,11 +15,11 @@
     "database": {
         "main": ["skeleton"],
         "skeleton" : {
-            "connection": "sqlite:///{{BASE_DIR}}/skeleton.db"
+            "connection": "sqlite:///{{BASE_DIR}}/data/skeleton.db"
         }
     },
-    "version": "0.1.5",
+    "version": "0.2.0",
     "variables" : {
-        "Version" : "0.1.5"
+        "Version" : "0.2.0"
     }
 }
